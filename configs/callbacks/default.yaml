@@ -1,0 +1,15 @@
+defaults:
+  - model_checkpoint.yaml
+  - early_stopping.yaml
+  - model_summary.yaml
+  - rich_progress_bar.yaml
+  - _self_
+
+model_checkpoint:
+  monitor: null
+
+early_stopping:
+  monitor: null
+  min_delta: 0.005
+  patience: 7
+  mode: "max"

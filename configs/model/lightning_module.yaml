@@ -1,0 +1,9 @@
+defaults:
+  - optimizer: sgd.yaml
+  - scheduler: reduce_lr_on_plateau.yaml
+  - net: model.yaml
+  - metrics: default.yaml
+
+_target_: null
+
+compile: false

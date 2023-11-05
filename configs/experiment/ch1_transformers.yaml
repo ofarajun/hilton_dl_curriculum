@@ -1,0 +1,73 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=ch1_transformers
+
+defaults:
+  # can override config groups here
+  - override /data: default.yaml
+  - override /model: lightning_module.yaml
+  - override /callbacks: default.yaml
+  - override /trainer: gpu.yaml
+  - override /logger: tensorboard.yaml
+
+  # override config groups options here
+  - override /model/net: model.yaml
+  - override /model/optimizer: sgd.yaml
+  - override /model/scheduler: none.yaml
+
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+experiment_name: chapter1_transformers
+
+tags: ["chapter1", "transformers"]
+
+seed: 42
+
+optimized_metric: null
+
+# arguments related to dataset and dataloaders
+data:
+  dataset_args:
+    data_dir: ${paths.data_dir}/080523_Cam201_202_train_test_cropped/
+
+  dataloader_args:
+    batch_size: 1  # virtual batch size (this is actually loaded into memory)
+    num_workers: 8  # 0 = no multiprocessing, usually set to # cpu cores on your machine
+
+  validation_args:
+    validate: True
+    validate_on_test: False
+    test: False
+
+# arguments related to network, optimizer, schedulers, and metrics
+model:
+  net:
+    sentence_length: null
+
+  optimizer:
+    lr: 0.1
+    weight_decay: 0
+    momentum: 0
+
+  metrics:
+    placeholder: null
+
+  compile: false
+
+# arguments related to actual training: DDP, AMP, virtual batch size, how often to validate etc.
+trainer:
+  min_epochs: 20  # prevents EarlyStopping before this epoch
+  max_epochs: 100
+  precision: "16-mixed"
+  check_val_every_n_epoch: 1
+  deterministic: True
+  accelerator: gpu
+  # devices can be following formats:
+  # devices: 2 --> # of GPUs (cuda:0, cuda:1)
+  # devices: "2," --> GPU 2 (cuda:2), COMMA NECESSARY
+  # devies: "1, 2" --> GPUs 1 and 2 (cuda:1, cuda:2), COMMA NECESSARY
+  devices: "0,"
+  #strategy: ddp # for devices > 1 only

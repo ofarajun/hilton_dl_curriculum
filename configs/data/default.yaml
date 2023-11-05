@@ -1,0 +1,16 @@
+_target_: null
+
+dataset_args:
+  data_dir: ${paths.data_dir}/test/
+
+dataloader_args:
+  batch_size: 4
+  num_workers: 8
+  drop_last: True
+  pin_memory: True
+  persistent_workers: True
+
+validation_args:
+  validate: True
+  validate_on_test: False
+  test: False
